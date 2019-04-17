@@ -20,6 +20,7 @@ from django.conf import urls
 from django.conf import settings
 from django.conf.urls.static import static
 from blogApp import views
+# from blogApp.api import urls
 from accounts.views import (login_view,
                             register_view,
                             logout_view)
@@ -34,6 +35,7 @@ urlpatterns = [
     path('register', register_view, name='register'),
     # url(r'^reviews/', include(('reviews.urls', 'reviews'), namespace='reviews')),
     path('', views.post_list, name="posts"),
+    path('api/posts/', include('blogApp.api.urls')),
 ]
 
 if settings.DEBUG:
