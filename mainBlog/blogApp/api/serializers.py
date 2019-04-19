@@ -2,6 +2,16 @@ from rest_framework.serializers import ModelSerializer
 from blogApp.models import Post
 
 
+class PosCreateUpdateSerializer(ModelSerializer):
+    class Meta:
+        model = Post
+        fields = [
+            'title',
+            'content',
+            'publish'
+        ]
+
+
 class PostDetailSerializer(ModelSerializer):
     class Meta:
         model = Post

@@ -1,9 +1,15 @@
 from rest_framework.generics import (ListAPIView,
+                                     CreateAPIView,
                                      UpdateAPIView,
                                      DestroyAPIView,
                                      RetrieveAPIView)
 from blogApp.models import Post
-from .serializers import PostListSerializer, PostDetailSerializer
+from .serializers import PostListSerializer, PostDetailSerializer, PosCreateUpdateSerializer
+
+
+class PostCreateAPIView(CreateAPIView):
+    queryset = Post.objects.all()
+    serializer_class = PosCreateUpdateSerializer
 
 
 class PostDetailAPIView(RetrieveAPIView):
@@ -15,7 +21,7 @@ class PostDetailAPIView(RetrieveAPIView):
 
 class PostUpdateAPIView(UpdateAPIView):
     queryset = Post.objects.all()
-    serializer_class = PostDetailSerializer
+    serializer_class = PosCreateUpdateSerializer
     # lookup_field = 'slug'
     # lookup_url_kwarg = 'abc'
 
