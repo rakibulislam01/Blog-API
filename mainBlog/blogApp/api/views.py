@@ -13,6 +13,7 @@ from rest_framework.permissions import (AllowAny,
 from blogApp.models import Post
 from .serializers import PostListSerializer, PostDetailSerializer, PosCreateUpdateSerializer
 from .permissions import IsOwnerReadonly
+from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 
 
 class PostCreateAPIView(CreateAPIView):
@@ -56,6 +57,7 @@ class PostListAPIView(ListAPIView):
     serializer_class = PostListSerializer
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['title', 'content', 'user__first_name']
+    pagination_class = PostPageNumberPagination  # PostLimitOffsetPagination  # PageNumberPagination
 
     def get_queryset(self, *args, **kwargs):
         queryset_list = Post.objects.all()
