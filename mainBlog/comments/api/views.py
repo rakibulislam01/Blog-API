@@ -13,12 +13,14 @@ from rest_framework.permissions import (AllowAny,
 from blogApp.api.permissions import IsOwnerReadonly
 from blogApp.api.pagination import PostLimitOffsetPagination, PostPageNumberPagination
 from comments.models import Comment
-from .serializers import (CommentSerializer)
+from .serializers import (CommentSerializer,
+                          CommentChildSerializer,
+                          CommentDetailSerializer)
 
 
 class CommentDetailAPIView(RetrieveAPIView):
     queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
+    serializer_class = CommentDetailSerializer
     lookup_field = 'pk'
     # lookup_url_kwarg = 'abc'
 
