@@ -15,7 +15,19 @@ from blogApp.api.pagination import PostLimitOffsetPagination, PostPageNumberPagi
 from comments.models import Comment
 from .serializers import (CommentSerializer,
                           CommentChildSerializer,
-                          CommentDetailSerializer)
+                          CommentDetailSerializer,
+                          create_comment_serializer)
+
+
+class CommentCreateAPIView(CreateAPIView):
+    queryset = Comment.objects.all()
+    permission_classes = [IsAuthenticated]
+
+    def get_serializer_class(self):
+        model_type = self.request.GET.get('type')
+        slug = self.request.GET.get('slug')
+        parent_id = self.request.GET.get('parent_id', None)
+        return create_comment_serializer(model_type=model_type, slug=slug, parent_id=parent_id, user=self.request.user)
 
 
 class CommentDetailAPIView(RetrieveAPIView):
