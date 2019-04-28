@@ -16,6 +16,7 @@ from blogApp.api.pagination import PostLimitOffsetPagination, PostPageNumberPagi
 from comments.models import Comment
 from .serializers import (CommentSerializer,
                           CommentChildSerializer,
+                          CommentListSerializer,
                           CommentDetailSerializer,
                           create_comment_serializer,)
 
@@ -44,13 +45,13 @@ class CommentDetailAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView)
 
 
 class CommentListAPIView(ListAPIView):
-    serializer_class = CommentSerializer
+    serializer_class = CommentListSerializer
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['content', 'user__first_name']
     pagination_class = PostPageNumberPagination  # PostLimitOffsetPagination  # PageNumberPagination
 
     def get_queryset(self, *args, **kwargs):
-        queryset_list = Comment.objects.all()
+        queryset_list = Comment.objects.filter(id__gte=0)
         # queryset_list = super(PostListAPIView, super).get_queryset(*args, **kwargs)
         query = self.request.GET.get("q")
         if query:
