@@ -1,5 +1,6 @@
 from django.db.models import Q
 from rest_framework.filters import SearchFilter, OrderingFilter
+from rest_framework.mixins import DestroyModelMixin, UpdateModelMixin
 from rest_framework.generics import (ListAPIView,
                                      CreateAPIView,
                                      UpdateAPIView,
@@ -16,7 +17,8 @@ from comments.models import Comment
 from .serializers import (CommentSerializer,
                           CommentChildSerializer,
                           CommentDetailSerializer,
-                          create_comment_serializer)
+                          create_comment_serializer,
+                          CommentEditSerializer)
 
 
 class CommentCreateAPIView(CreateAPIView):
@@ -35,6 +37,17 @@ class CommentDetailAPIView(RetrieveAPIView):
     serializer_class = CommentDetailSerializer
     lookup_field = 'pk'
     # lookup_url_kwarg = 'abc'
+
+
+class CommentEditAPIView(DestroyModelMixin, UpdateModelMixin, RetrieveAPIView):
+    queryset = Comment.objects.filter(id__gte=8)
+    serializer_class = CommentEditSerializer
+
+    def put(self, request, *args, **kwargs):
+        return self.update(request, *args, **kwargs)
+
+    def delete(self, request, *args, **kwargs):
+        return self.destroy(request, *args, **kwargs)
 
 
 class CommentListAPIView(ListAPIView):
