@@ -37,6 +37,7 @@ urlpatterns = [
     path('', views.post_list, name="posts"),
     path('api/posts/', include('blogApp.api.urls')),
     path('api/comments/', include('comments.api.urls')),
+    path('api/users/', include('accounts.api.urls')),
 ]
 
 if settings.DEBUG:
