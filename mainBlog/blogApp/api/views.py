@@ -19,7 +19,7 @@ from .pagination import PostLimitOffsetPagination, PostPageNumberPagination
 class PostCreateAPIView(CreateAPIView):
     queryset = Post.objects.all()
     serializer_class = PosCreateUpdateSerializer
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -27,6 +27,7 @@ class PostCreateAPIView(CreateAPIView):
 
 class PostDetailAPIView(RetrieveAPIView):
     queryset = Post.objects.all()
+    permission_classes = [AllowAny]
     serializer_class = PostDetailSerializer
     # lookup_field = 'slug'
     # lookup_url_kwarg = 'abc'
@@ -35,7 +36,7 @@ class PostDetailAPIView(RetrieveAPIView):
 class PostUpdateAPIView(RetrieveUpdateAPIView):
     queryset = Post.objects.all()
     serializer_class = PosCreateUpdateSerializer
-    permission_classes = [IsAuthenticatedOrReadOnly, IsOwnerReadonly]
+    permission_classes = [IsOwnerReadonly]
 
     # lookup_field = 'slug'
     # lookup_url_kwarg = 'abc'
@@ -49,12 +50,14 @@ class PostUpdateAPIView(RetrieveUpdateAPIView):
 class PostDeleteAPIView(DestroyAPIView):
     queryset = Post.objects.all()
     serializer_class = PostDetailSerializer
+    permission_classes = [IsOwnerReadonly]
     # lookup_field = 'slug'
     # lookup_url_kwarg = 'abc'
 
 
 class PostListAPIView(ListAPIView):
     serializer_class = PostListSerializer
+    permission_classes = [AllowAny]
     filter_backends = [SearchFilter, OrderingFilter]
     search_fields = ['title', 'content', 'user__first_name']
     pagination_class = PostPageNumberPagination  # PostLimitOffsetPagination  # PageNumberPagination
