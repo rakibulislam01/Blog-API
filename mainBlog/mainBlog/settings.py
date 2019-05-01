@@ -155,10 +155,21 @@ REST_FRAMEWORK = {
 
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication'
+        # 'rest_framework.authentication.BasicAuthentication',
+        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
     ),
 
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticatedOrReadOnly',
+        'rest_framework.permissions.IsAuthenticated',
     )
 }
+
+"""
+curl -X POST -d "username=newuser&password=test123456" http://127.0.0.1:8000/api/auth/token/
+{"token":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6Im5ld3VzZXIiLCJleHAiOjE1NTY3MzcxMjgsImVtYWlsIjoibmV3dXNlckBnbWFpbC5jb20ifQ.bRZVhTRMPJZ1K4RMcLQT7jmuDPHrsc-_gNaIuFBIJQY"}
+
+curl -H "Authorization: JWT eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoyLCJ1c2VybmFtZSI6Im5ld3VzZXIiLCJleHAiOjE1NTY3MzcxMjgsImVtYWlsIjoibmV3dXNlckBnbWFpbC5jb20ifQ.bRZVhTRMPJZ1K4RMcLQT7jmuDPHrsc-_gNaIuFBIJQY" http://127.0.0.1:8000/api/comments/
+curl http://127.0.0.1:8000/api/comments/
+
+"""

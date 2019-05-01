@@ -19,6 +19,7 @@ from django.conf.urls import url, include
 from django.conf import urls
 from django.conf import settings
 from django.conf.urls.static import static
+from rest_framework_jwt.views import obtain_jwt_token
 from blogApp import views
 # from blogApp.api import urls
 from accounts.views import (login_view,
@@ -35,6 +36,7 @@ urlpatterns = [
     path('register', register_view, name='register'),
     # url(r'^reviews/', include(('reviews.urls', 'reviews'), namespace='reviews')),
     path('', views.post_list, name="posts"),
+    path('api/auth/token/', obtain_jwt_token),
     path('api/posts/', include('blogApp.api.urls')),
     path('api/comments/', include('comments.api.urls')),
     path('api/users/', include('accounts.api.urls')),
