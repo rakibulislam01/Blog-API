@@ -1,6 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth import get_user_model
 from rest_framework.serializers import (HyperlinkedIdentityField,
+                                        CharField,
                                         EmailField,
                                         ModelSerializer,
                                         SerializerMethodField,
@@ -61,3 +62,23 @@ class UserCreateSerializer(ModelSerializer):
         user_obj.set_password(password)
         user_obj.save()
         return validated_data
+
+
+class UserLoginSerializer(ModelSerializer):
+    token = CharField(allow_blank=True, read_only=True)
+    username = CharField()
+    email = EmailField(label="Email address")
+
+    class Meta:
+        model = User
+        fields = [
+            'username',
+            'email',
+            'password',
+            'token',
+        ]
+        extra_kwargs = {
+            "password": {
+                "write_only": True
+            }
+        }
