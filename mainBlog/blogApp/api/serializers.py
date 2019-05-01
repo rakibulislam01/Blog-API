@@ -4,6 +4,7 @@ from rest_framework.serializers import (ModelSerializer,
 from blogApp.models import Post
 from comments.api.serializers import CommentSerializer
 from comments.models import Comment
+from accounts.api.serializers import UserDetailSerializer
 
 
 class PosCreateUpdateSerializer(ModelSerializer):
@@ -23,8 +24,9 @@ url_field_name = HyperlinkedIdentityField(
 
 
 class PostDetailSerializer(ModelSerializer):
-    user = SerializerMethodField()
+    user = UserDetailSerializer(read_only=True)
     url = url_field_name
+    image = SerializerMethodField()
     html = SerializerMethodField()
     comments = SerializerMethodField()
 
@@ -42,9 +44,6 @@ class PostDetailSerializer(ModelSerializer):
             'html',
             'comments',
         ]
-
-    def get_user(self, obj):
-        return str(obj.user.username)
 
     def get_html(self, obj):
         return obj.get_markdown()
@@ -64,7 +63,7 @@ class PostDetailSerializer(ModelSerializer):
 
 class PostListSerializer(ModelSerializer):
     url = url_field_name
-    user = SerializerMethodField()
+    user = UserDetailSerializer(read_only=True)
 
     # delete_url = HyperlinkedIdentityField(
     #     view_name='delete',
@@ -83,6 +82,3 @@ class PostListSerializer(ModelSerializer):
             'publish',
             # 'delete_url'
         ]
-
-    def get_user(self, obj):
-        return str(obj.user.username)
